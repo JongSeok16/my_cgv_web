@@ -12,7 +12,7 @@ import time
 
 today_date = time.strftime('%Y%m%d', time.localtime(time.time()))
 
-
+url = 'http://www.cgv.co.kr'
 a = []
 
 def get_cgv () :
@@ -40,14 +40,15 @@ def crawling (movie_data_link,areas) :
 
     for i in soup.select("div.sect-showtimes > ul > li"):
         for e in i.select("div.col-times > div.type-hall") :
-            for ec in e.select(" div.info-timetable > ul > li"):
+            for ec, ur in zip(e.select(" div.info-timetable > ul > li"),e.select(" div.info-timetable > ul > li > a")):
                 movie_data = {
                     "name" : i.div.a.strong.text.strip(),
                     "dt_area" : e.select_one("div.info-hall > ul > li:nth-child(2)").text.strip(),
                     "start_time" : ec.em.text.strip(),
                     "seat" : ec.span.text.strip(),
                     "area" : areas,
-                    "date" : today_date
+                    "date" : today_date,
+                    "movie_url" : url + ur.get("href")
                 }
                 a.append(movie_data)
 
@@ -67,7 +68,7 @@ if __name__ == "__main__" :
             cgv_data = Cgv_data(
                 name = i["name"] , start_time = i["start_time"],
                 area = i["area"], seat = i["seat"] ,
-                dt_area = i["dt_area"], date = i["date"]
+                dt_area = i["dt_area"], date = i["date"], link = i["movie_url"]
             )
             cgv_data.save()
 
@@ -80,7 +81,7 @@ if __name__ == "__main__" :
                 name = i["name"], start_time = i["start_time"],
                 area = i["area"], dt_area = i["dt_area"] ,
                 date = i["date"]).exclude(seat = i["seat"])
-            data.update(seat =i["seat"])
+            data.update( seat =i["seat"] )
 
 
 

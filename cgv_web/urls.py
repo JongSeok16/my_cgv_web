@@ -18,4 +18,6 @@ from django.urls import path,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('cgv_cr.urls')),
+    # include를 사용 위치경로 설정 cgv_cr 하위의 urls.py 파일을 찾아가라
 ]

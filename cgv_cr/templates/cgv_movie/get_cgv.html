@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1> 해당 지역 영화 리스트 </h1>
+
+    <ol>
+        {% load get_item from name_filter %}
+        {% for i in movie_ls %}
+            <li>{{ i|get_item }}</li>
+            {% for e in i.values %}
+                {% for j in e %}
+                    {{j.area}}
+                    {{j.dt_area}}
+                    {{j.start_time}}
+                    <a href="{{j.link}}"> {{j.seat}}</a>
+                    {{j.date}}  <br />
+
+                {% endfor %}
+            {% endfor %}
+        {% endfor %}
+    </ol>
+
+</body>
+</html>

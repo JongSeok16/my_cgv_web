@@ -9,6 +9,7 @@ class Cgv_data (models.Model) :
     seat = models.CharField(max_length=50,null=True)
     dt_area = models.CharField(max_length=50,null=True)
     date = models.CharField(max_length=50,null=True)
+    link = models.URLField(null=True)
 
     def __str__(self):
     	return self.area

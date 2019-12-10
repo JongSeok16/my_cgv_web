@@ -5,6 +5,10 @@
     <title>Title</title>
 </head>
 <body>
-
+    <h1>CGV</h1>
+    <form action="{% url 'get_cgv' %}" method="post">{% csrf_token %}
+        지역을 입력하시오 : <input type="text" name = 'area'>
+        <input type="submit" name ='area_data'>
+    </form>
 </body>
 </html>
