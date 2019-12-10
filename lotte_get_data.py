@@ -44,28 +44,3 @@ for area_code in area_list :
         }
         movie_list.append(movie_dic)
 pprint.pprint(movie_list)
-
-# 위의 dic 변수의 내용을 paramList 라는 변수명으로 다시 설정합니다.
-# encode() 를 하지 않으면 해당 페이지를 접속했을경우 인코딩 오류가 발생합니다.
-data = {"paramList": str(dic).encode()}
-
-# 실제 ajax로 호출되는 주소는 아래 주소 입니다.
-
-
-# 해당 주소로 paramList 변수의 데이터를 POST 형태로 전송합니다.
-# for i in area_list :
-r = requests.post(url, data=data)
-
-result = json.loads(r.text)
-movie_list = []
-
-for i in result['PlaySeqs']['Items'] :
-    if i.get('IsBookingYN') == 'N' :
-        i['BookingSeatCount'] = '마감'
-    movie_dic = {
-        "name" : i.get('MovieNameKR'), "dt_area" : i.get('ScreenNameKR'),
-        "start_time" : i.get('StartTime'), "seat" : i.get('BookingSeatCount'),
-        "area" :  i.get('CinemaNameKR'), "date" : today
-    }
-    movie_list.append(movie_dic)
-print(movie_list)
