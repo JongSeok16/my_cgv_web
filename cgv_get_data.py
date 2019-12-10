@@ -83,26 +83,3 @@ if __name__ == "__main__" :
                 date = i["date"]).exclude(seat = i["seat"])
             data.update( seat =i["seat"] )
 
-
-
-
-
-
-
-
-
-
-
-
-
-#
-# for i in soup.select("div.sect-showtimes > ul > li"):
-#     for e in i.select("div.col-times > div.type-hall") :
-#         for ec in e.select(" div.info-timetable > ul > li"):
-#             movie_data = {
-#                 "name" : i.div.a.strong.text.strip(),
-#                 "area" : e.select_one("div.info-hall > ul > li:nth-child(2)").text.strip(),
-#                 "time" : ec.em.text.strip(),
-#                 "seat" : ec.span.text.strip()
-#             }
-#             a.append(movie_data)
