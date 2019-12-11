@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from cgv_cr.models import Cgv_data
+from cgv_cr.models import Cgv_data, Lotte_data
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from itertools import groupby
@@ -10,19 +10,34 @@ def index (request) :
     return render(request, 'cgv_movie/index.html')
 
 def get_cgv (request) :
+    mv_list = []
+    mv_gr_ls =[]
     area_data = request.POST.get('area', False)
     qs = Cgv_data.objects.filter(area__contains=area_data)
-    a = []
-    mv =[]
     for i in qs :
         dic = {'name' : i.name, 'start_time' : i.start_time, 'area' : i.area,
                'seat': i.seat, 'dt_area' : i.dt_area, 'link' : i.link}
-        a.append(dic)
-    for k, g in groupby(a, lambda e: e['name']):
+        mv_list.append(dic)
+    for k, g in groupby(mv_list, lambda e: e['name']):
         c = {k : list(g)}
-        mv.append(c)
-    movie_list = {"movie_ls": mv}
+        mv_gr_ls.append(c)
+    movie_list = {"movie_ls": mv_gr_ls}
     return render(request, 'cgv_movie/get_cgv.html', movie_list)
+
+def get_lotte (request) :
+    mv_list = []
+    mv_gr_ls =[]
+    area_data = request.POST.get('area', False)
+    qs = Lotte_data.objects.filter(area__contains=area_data)
+    for i in qs :
+        dic = {'name' : i.name, 'start_time' : i.start_time, 'area' : i.area,
+               'seat': i.seat, 'dt_area' : i.dt_area }
+        mv_list.append(dic)
+    for k, g in groupby(mv_list, lambda e: e['name']):
+        c = {k : list(g)}
+        mv_gr_ls.append(c)
+    movie_list = {"movie_ls": mv_gr_ls}
+    return render(request, 'cgv_movie/get_lotte.html', movie_list)
 
 
 
