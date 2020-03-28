@@ -39,23 +39,30 @@ def crawling (movie_data_link,areas) :
     soup = BeautifulSoup(res.content, "html.parser")
 
     for i in soup.select("div.sect-showtimes > ul > li"):
-        for e in i.select("div.col-times > div.type-hall") :
-            for ec, ur in zip(e.select(" div.info-timetable > ul > li"),e.select(" div.info-timetable > ul > li > a")):
-                movie_data = {
-                    "name" : i.div.a.strong.text.strip(),
-                    "dt_area" : e.select_one("div.info-hall > ul > li:nth-child(2)").text.strip(),
-                    "start_time" : ec.em.text.strip(),
-                    "seat" : ec.span.text.strip(),
-                    "area" : areas,
-                    "date" : today_date,
-                    "movie_url" : url + ur.get("href")
-                }
-                a.append(movie_data)
+        for e in i.select("div.col-times > div.type-hall"):
+            for j in e.select("div.info-timetable > ul > li"):
+                if j.select_one("a > em") != None and j.select_one("a > span") != None:
+                    dic = {
+                        'name': i.div.a.strong.text.strip(),
+                        'area' : areas,
+                        'dt_area': e.select_one("div.info-hall > ul > li:nth-child(2)").text.strip(),
+                        'start_time': j.select_one("a > em").text,
+                        'seat': j.select_one("a > span").text,
+                        'movie_url': url + j.select_one("a").get("href"),
+                        'date' : today_date
+                    }
+                elif j.select_one("a > em") == None and j.select_one("a > span") == None:
+                    dic = {
+                        'name': i.div.a.strong.text.strip(),
+                        'area': areas,
+                        'dt_area': e.select_one("div.info-hall > ul > li:nth-child(2)").text.strip(),
+                        'start_time': j.em.text,
+                        'seat': j.span.text,
+                        'movie_url': None,
+                        'date' : today_date
+                    }
+                a.append(dic)
 
-
-# 'name'     : '겨울왕국 2',     'start_time'  : '2130',
-# 'end_time' : '2318',          'area'        : '씨네드쉐프 용산아이파크몰',
-# 'seat'     : '38',            'dt_area'     : 'CINE de CHEF Salon S관(소파좌석)'
 
 if __name__ == "__main__" :
     get_cgv_data = get_cgv()
